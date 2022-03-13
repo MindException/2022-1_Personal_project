@@ -39,11 +39,11 @@
             android:layout_weight="1"></TextView>
 
         <Button
-            android:id="@+id/fragment_button"
+            android:id="@+id/lifecycle_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="flagment"></Button>
+            android:text="생명주기 연습"></Button>
 
     </LinearLayout>
 

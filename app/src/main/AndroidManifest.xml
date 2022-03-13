@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Personal_LastProject">
         <activity
+            android:name=".testintentLife"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
