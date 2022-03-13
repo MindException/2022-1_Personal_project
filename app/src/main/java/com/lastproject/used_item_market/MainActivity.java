@@ -13,6 +13,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     Button lifebutton;
+    Button Login;
+
     //DB 관련
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
-
+        //생명주기 연습
         lifebutton = (Button)findViewById(R.id.lifecycle_button);
         lifebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        //구글 로그인 연습
 
 
 
