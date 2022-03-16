@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -32,15 +35,17 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private FirebaseAuth auth;                      //파이어 베이스 인증 객체
     private GoogleApiClient googleApiClient;        //구글 API 클라이언트 객체
     private static final int REQ_SIGN_GOOGLE = 100; //구글 로그인 결과 코드
+    GoogleSignInOptions googleSignInOptions;
 
     private String email;
+    Button cancle_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -65,6 +70,22 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             }
         });
+
+        cancle_button = (Button)findViewById(R.id.cancle_button);
+        cancle_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                System.out.println("눌림");
+                auth.signOut();
+
+                //이거 2개로 정리가 가능하다.
+                FirebaseAuth.getInstance().signOut();
+                AuthUI.getInstance().signOut(getApplicationContext());
+
+
+            }
+        });
     }
 
     //구글 로그인 인증을 요청할 경유 결과 값을 되돌려 받는 곳이다
@@ -83,7 +104,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                 GoogleSignInAccount account = result.getSignInAccount();   //구글로 부터 온 결과가 다 담겨있다.
                 resultLogin(account);   //로그인 결과값을 수행하는 메소드
-
 
 
             }else{  //결과에 실패하여 가져오지 못하였다
@@ -111,6 +131,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             Toast.makeText(Login.this, email, Toast.LENGTH_SHORT).show();
 
 
+
                         }else{
 
                             Toast.makeText(Login.this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
@@ -123,10 +144,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
 
+
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
 
 
     }
+
 }
