@@ -48,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         //구글 로그인 연습
+        login_button = (Button)findViewById(R.id.login_button);
+        login_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent a = new Intent(MainActivity.this, Login.class);
+                startActivity(a);
+
+            }
+        });
 
 
 
