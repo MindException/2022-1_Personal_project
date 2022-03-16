@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     Button lifebutton;
-    Button Login;
+    Button login_button;
 
     //DB 관련
     private FirebaseDatabase database;
