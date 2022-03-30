@@ -24,16 +24,16 @@ android:orientation="horizontal">
 <TextView
     android:layout_width="0dp"
     android:layout_height="match_parent"
-    android:layout_weight="1"></TextView>
+    android:layout_weight="2"></TextView>
 
-<Button
-    android:id="@+id/back_button"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="3"
-    android:text="뒤로가"></Button>
+        <Button
+            android:id="@+id/insert_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:text="통신 확인"></Button>
 
-<TextView
+        <TextView
     android:layout_width="0dp"
     android:layout_height="match_parent"
     android:layout_weight="1"></TextView>
