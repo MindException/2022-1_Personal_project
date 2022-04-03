@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
     ImageView iv;
     private int requestCode;
 
+    //테스트용
+    University test1 = new University("b100대학교 인문관", 30.1);
+    University test2 = new University("b100대학교", 30.0);
+    University test3 = new University("c100대학", 40);
+    University test4 = new University("a100대학교 인문관", 20.4);
+    University test5 = new University("a100대학교 본관", 20.1);
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
-
+        /*
         //생명주기 연습
         myRef.addValueEventListener(new ValueEventListener() {      //테스트로 추가될 때마다
             @Override
@@ -68,10 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
+        */
 
         //생명주기 이동
         lifebutton = (Button)findViewById(R.id.lifecycle_button);
@@ -102,6 +109,75 @@ public class MainActivity extends AppCompatActivity {
 
         testQuery();
         imageButton();
+        writePostButton();
+
+
+        //거리 순 정렬 테스트
+        ArrayList<University> univlist = new ArrayList<University>();
+        univlist.add(test1);
+        univlist.add(test2);
+        univlist.add(test3);
+        univlist.add(test4);
+        univlist.add(test5);
+        univlist.sort(new CompareUnivDistance<University>());               //거리 정렬은 정확히 잘 됨
+        for(int i = 0; i < univlist.size(); i++){
+            System.out.println(univlist.get(i).university);
+        }
+        System.out.println("ㅡㅡㅡㅡㅡㅡㅡ");
+        //여기서 이제 중복 대학을 없애는 코드를 생성한다.
+        ArrayList<University> stackUniv = new ArrayList<University>();      //순서대로 되었으니 대학만 받을 것이다.
+        int trigger = 0;            //1이 되면 저장한적이 있음으로 저장을 안한다.
+        for(int i = 0; i < univlist.size(); i++){
+
+            int endIndex = 0;       //대학교라는 글자의 시작 인덱스를 가져온다.
+            endIndex = univlist.get(i).university.indexOf("대학교");       //대학교에서 대의 시작 인덱스를 가져온다.
+            if(endIndex != -1){         //대학교로 검색하여 나온 경우
+
+                univlist.get(i).university = univlist.get(i).university.substring(0,endIndex+3);  //이렇게 하면 대학교까지의 이름만 가져온다.
+                if(stackUniv.size() == 0){       //아무것도 없을 경우인 처음에는 그냥 넣는다.
+                    stackUniv.add(univlist.get(i));
+                }else{
+                    for(int j = 0; j < stackUniv.size(); j++){
+
+                        if(univlist.get(i).university.equals(stackUniv.get(j).university)){     //서로 대학이 같지 않을 경우만 추가
+                            trigger = 1;        //저장한 적이 있다.
+                        }
+                    }
+                    if(trigger == 0){
+                        stackUniv.add(univlist.get(i));
+                    }
+                }
+
+            }else{                 //대학으로 검색하여 나온 경우
+
+                endIndex = univlist.get(i).university.indexOf("대학");       //대학에서 대의 시작 인덱스를 가져온다.
+                univlist.get(i).university = univlist.get(i).university.substring(0,endIndex+2);  //이렇게 하면 대학교까지의 이름만 가져온다.
+                if(stackUniv.size() == 0){       //아무것도 없을 경우인 처음에는 그냥 넣는다.
+                    stackUniv.add(univlist.get(i));
+                }else{
+                    for(int j = 0; j < stackUniv.size(); j++){
+
+                        if(univlist.get(i).university.equals(stackUniv.get(j).university)){     //서로 대학이 같지 않을 경우만 추가
+                            trigger = 1;        //저장한 적이 있다.
+                        }
+                    }
+                    if(trigger == 0){
+                        stackUniv.add(univlist.get(i));
+                    }
+                }
+
+            }
+
+            trigger = 0;
+
+        }//대학교 중복 없애기(성공)
+        System.out.println(stackUniv.size());
+        for(int i = 0; i < stackUniv.size(); i++){
+            System.out.println(stackUniv.get(i).university);
+        }
+
+
+
 
     }//onCreate() 끝
 
@@ -208,8 +284,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //게시글 작성 연습
+    void writePostButton(){
 
+        Button btn_post = findViewById(R.id.postpage_btn);
+        btn_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent a12 = new Intent(MainActivity.this, PostPage.class);
+                startActivity(a12);
+
+            }
+        });
+
+    }
 
 
 }

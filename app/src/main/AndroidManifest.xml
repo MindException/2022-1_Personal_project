@@ -15,6 +15,9 @@
         <activity
             android:name=".testintentLife"
             android:exported="false" />
+        <activity android:name=".PostPage"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
