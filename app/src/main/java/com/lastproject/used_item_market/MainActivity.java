@@ -188,13 +188,19 @@ public class MainActivity extends AppCompatActivity {
         Button bt_query = (Button)findViewById(R.id.query_button);
         bt_query.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                Query testQuery = myRef.child("User").orderByChild("google_email").equalTo("tourer97@sunmoon.ac.kr");
+            public void onClick(View view) {        //-MyWmy4BWQkVrPxOq8Iw (test의 key값)
+                //기본
+                //Query testQuery = myRef.child("User").orderByChild("google_email").equalTo("test");
+                //여기부터 역순으로 가져온다.(제일 아래가 최신이기 때문에 이 순서가 맞다.)
+                //Query testQuery = myRef.child("User").endBefore("-MyWmy4BWQkVrPxOq8Iw");
+                Query testQuery = myRef.child("User").orderByChild("google_email").equalTo("1");
                 testQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                        if(snapshot.exists() == false){         //이것을 통하여 스냅샷에 정보가 들어있는지 없는지 확인이 가능하다.
+                            System.out.println("아무것도 안들어옴");
+                        }
 
                         for(DataSnapshot ds : snapshot.getChildren()){
 
