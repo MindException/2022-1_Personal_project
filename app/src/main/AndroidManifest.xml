@@ -10,12 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Personal_LastProject">
         <activity
+            android:name=".newQueryTest"
+            android:exported="false" />
+        <activity
             android:name=".Login"
             android:exported="false" />
         <activity
             android:name=".testintentLife"
             android:exported="false" />
-        <activity android:name=".PostPage"
+        <activity
+            android:name=".PostPage"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

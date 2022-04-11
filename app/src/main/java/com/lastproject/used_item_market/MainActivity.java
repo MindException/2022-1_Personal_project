@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.icu.text.SymbolTable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -178,6 +179,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        newQueryTest();
+
+
 
     }//onCreate() 끝
 
@@ -288,6 +292,9 @@ public class MainActivity extends AppCompatActivity {
             iv.setClipToOutline(true);              //모양에 맞게 사진 자르기
 
         }
+
+
+
     }
 
     //게시글 작성 연습
@@ -306,5 +313,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    void newQueryTest(){
+
+
+        Button newqry = (Button)findViewById(R.id.newquery_btn);
+        newqry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent a12 = new Intent(MainActivity.this, newQueryTest.class);
+                startActivity(a12);
+                System.exit(0);
+
+
+            }
+        });
+
+    }
 
 }
