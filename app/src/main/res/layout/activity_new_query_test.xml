@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="새로고침"></Button>
+            android:text="카테고리"></Button>
 
         <TextView
             android:layout_width="0dp"
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="데이터 추가"></Button>
+            android:text="검색"></Button>
 
     </LinearLayout>
 
@@ -56,13 +56,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1"></TextView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/product_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="7">
 
-        </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
 
     </LinearLayout>
 
