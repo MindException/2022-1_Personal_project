@@ -67,6 +67,21 @@ public class newQueryTest extends AppCompatActivity {  //클라이언트 부담�
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
+
+
+
+
+
+
+        Product sampel_product = new Product();
+
+
+        //파이어 베이스 데이터베이스 연동
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("Product").push().setValue(sampel_product);
+
+
         //리사이클 뷰
         recyclerView = (RecyclerView)findViewById(R.id.product_list);
 
@@ -116,7 +131,8 @@ public class newQueryTest extends AppCompatActivity {  //클라이언트 부담�
 
                         String last_product_key = product_key.get(0);
                         System.out.println(last_product_key);
-                        Query addData = myRef.child("Product").endBefore(last_product_key);
+                        Query addData = myRef.child("Product").endBefore(last_product_key)
+                                .orderByChild("purpose").equalTo("판매").limitToLast(5);
                         addData.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {

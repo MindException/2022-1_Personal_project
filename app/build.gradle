@@ -47,5 +47,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'           //글라이드 이미지 로딩
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'   //글라이드 이미지 로딩2
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"  //swipeRefresh layout
+    //새 DB
+    implementation platform('com.google.firebase:firebase-bom:29.3.0')
+    implementation 'com.google.firebase:firebase-firestore:24.1.1'
 
 }
