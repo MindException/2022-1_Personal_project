@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Personal_LastProject">
         <activity
+            android:name=".NewDB"
+            android:exported="false" />
+        <activity
             android:name=".newQueryTest"
             android:exported="false" />
         <activity

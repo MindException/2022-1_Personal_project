@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         newQueryTest();
+        newDBTest();
 
 
 
@@ -328,6 +329,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    void newDBTest(){
+
+        Button newqry = (Button)findViewById(R.id.newdb_btn);
+        newqry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent a12 = new Intent(MainActivity.this, NewDB.class);
+                startActivity(a12);
+                System.exit(0);
+
+
+            }
+        });
+
+
 
     }
 
