@@ -68,11 +68,6 @@ public class newQueryTest extends AppCompatActivity {  //클라이언트 부담�
         myRef = database.getReference();
 
 
-
-
-
-
-
         Product sampel_product = new Product();
 
 

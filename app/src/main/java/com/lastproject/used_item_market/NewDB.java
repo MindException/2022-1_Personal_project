@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +24,9 @@ public class NewDB extends AppCompatActivity {
     FirebaseFirestore firestore;
     CollectionReference userDocument;
 
+    Button addProductBtn;
+    Button addProductBtn2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,19 +36,7 @@ public class NewDB extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         userDocument = firestore.collection("Users");
 
-
-        //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  저장 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-        //데이터 샘플
-        //User user = new User("test","1234", "admin");
-        //push 값 입력
-        //firestore.collection("Users").add(user);
-        //key 값 지정 입력
-        //firestore.collection("Users").document("a").set(user);
-
-        //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 불러오기 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
         //1번만 읽어오기는 addOnCompleteListener
-
 
         //.whereEqualTo("google_email", "test"
         Query test = userDocument.orderBy("google_email").endBefore("a");
@@ -68,10 +61,49 @@ public class NewDB extends AppCompatActivity {
 
 
 
+        addUser1();
+        addUser2();
     }
 
+    void addUser1(){
+
+        //push 값 입력
+        //firestore.collection("Users").add(user);
+        //key 값 지정 입력
+        //firestore.collection("Users").document("a").set(user);
+
+        addProductBtn = (Button)findViewById(R.id.product_add_btn);
+        addProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Product product = new Product();
 
 
+
+            }
+        });
+    }
+
+    void addUser2(){
+
+        //push 값 입력
+        //firestore.collection("Users").add(user);
+        //key 값 지정 입력
+        //firestore.collection("Users").document("a").set(user);
+
+        addProductBtn2 = (Button)findViewById(R.id.product_add_btn2);
+        addProductBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Product product = new Product();
+
+
+
+            }
+        });
+    }
 
 
 }
