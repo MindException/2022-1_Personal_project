@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Product> productArrayList = new ArrayList<>();
+    public List<Product> productArrayList = new ArrayList<>();
 
     RecycleSellAdapter(){}
 

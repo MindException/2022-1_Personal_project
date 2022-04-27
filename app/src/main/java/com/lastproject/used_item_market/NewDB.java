@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewDB extends AppCompatActivity {
+public class NewDB extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     FirebaseFirestore firestore;
     CollectionReference userDocument;
@@ -48,6 +49,8 @@ public class NewDB extends AppCompatActivity {
 
     String category = "모두보기";       //기본값
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class NewDB extends AppCompatActivity {
         //DB 생성
         firestore = FirebaseFirestore.getInstance();
         userDocument = firestore.collection("Users");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
 
         /*
         //1번만 읽어오기는 addOnCompleteListener
@@ -85,6 +89,7 @@ public class NewDB extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recycleSellAdapter = new RecycleSellAdapter(productList);
         recyclerView.setAdapter(recycleSellAdapter);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         //쿼리 시작
         productRef = firestore.collection("Product");
@@ -235,5 +240,107 @@ public class NewDB extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onRefresh() {       //새로고침 코드
 
+        //초기화
+        isScrolling = true;
+        isLastItemReached = false;
+        category = "남성 의류";
+        productList = new ArrayList<>();
+        //어뎁터를 새로 설치해줘야 한다.
+        recycleSellAdapter = new RecycleSellAdapter(productList);
+        recyclerView.setAdapter(recycleSellAdapter);
+
+        if (category.equals("모두보기")){
+            //카테고리가 정해지지 않은 기본보기
+        }else{
+            productRef = firestore.collection("Product");
+            Query query = productRef.orderBy("time", Query.Direction.DESCENDING).limit(limit);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){           //가져오는데 성공
+                        if (task.getResult().size() <= 0){          //물건이 없는 경우
+                            Toast.makeText(NewDB.this, "상품 없음", Toast.LENGTH_SHORT).show();
+                        }else{      //물건이 있다.
+                            for(DocumentSnapshot document : task.getResult()){
+                                Product product = document.toObject(Product.class);
+                                productList.add(product);
+                            }
+                            //상품 추가했으니 어뎁터 갱신
+                            recycleSellAdapter.notifyDataSetChanged();
+                            lastVisible = task.getResult().getDocuments().get(task.getResult().size() - 1);
+
+                            //스크롤 리스너 추가
+                            onScrollListener = new RecyclerView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                    super.onScrollStateChanged(recyclerView, newState);
+                                    if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                                        isScrolling = true;
+                                    }
+                                }
+
+                                //스크롤이 limit만큼 내려갈 시 다음 데이터를 limit만큼 읽어서 출력
+                                @Override
+                                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                    super.onScrolled(recyclerView, dx, dy);
+
+                                    //위치정보 가져오기
+                                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+
+                                    int firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+                                    int visibleItemCount = linearLayoutManager.getChildCount();
+                                    int totalItemCount = linearLayoutManager.getItemCount();
+
+                                    //스크롤 조건 시작
+                                    if(isScrolling && (firstVisiblePosition + visibleItemCount == totalItemCount) && !isLastItemReached ){
+
+                                        isScrolling = false;
+                                        //추가 쿼리
+                                        Query nextQuery = productRef.orderBy("time", Query.Direction.DESCENDING)
+                                                .startAfter(lastVisible).limit(limit);
+                                        nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> nextTask) {
+                                                if(nextTask.isSuccessful()){   //가져오는거 성공
+                                                    if(nextTask.getResult().size() > 0) {
+                                                        for(DocumentSnapshot nextDocument : nextTask.getResult()){
+                                                            Product product = nextDocument.toObject(Product.class);
+                                                            productList.add(product);
+                                                        }
+                                                        //어뎁터 또 갱신
+                                                        recycleSellAdapter.notifyDataSetChanged();
+                                                        lastVisible = nextTask.getResult().getDocuments().get(nextTask.getResult().size() - 1);
+
+                                                        if(nextTask.getResult().size() < limit){      //더 이상 갱신할 필요가 없다.
+                                                            isLastItemReached = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                    }//스크롤 조건 끝
+
+                                }
+                            };
+                            //스크롤 리스너 끝
+
+                            //스크롤 리스너 추가
+                            recyclerView.addOnScrollListener(onScrollListener);
+
+                        }
+                    }else{  //수신 실패
+                        System.out.println("수신 실패");
+                    }
+                }
+            });//메인 쿼리
+
+            swipeRefreshLayout.setRefreshing(false);        //업데이트 끝
+
+        }//if문 끝
+
+    }
 }
