@@ -36,8 +36,8 @@ public class NewDB extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         userDocument = firestore.collection("Users");
 
+        /*
         //1번만 읽어오기는 addOnCompleteListener
-
         //.whereEqualTo("google_email", "test"
         Query test = userDocument.orderBy("google_email").endBefore("a");
         test.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -58,8 +58,25 @@ public class NewDB extends AppCompatActivity {
 
             }
         });
+        */
+        //여기부터 리사이클 뷰
+
+        CollectionReference productRef = firestore.collection("Proudct");
+        //Query query = productRef.orderBy()
 
 
+
+
+
+
+
+
+
+
+
+
+
+        //리사이클 뷰 끝
 
         addUser1();
         addUser2();
@@ -78,8 +95,13 @@ public class NewDB extends AppCompatActivity {
             public void onClick(View view) {
 
                 Product product = new Product();
-
-
+                product.seller = "test";
+                product.title = "테스트용 목록";
+                product.cost = Integer.toUnsignedLong(99999999);
+                product.category = "남성 의류";
+                product.text = "test";
+                product.time = Time.nowTime();
+                firestore.collection("Product").add(product);
 
             }
         });
@@ -98,7 +120,13 @@ public class NewDB extends AppCompatActivity {
             public void onClick(View view) {
 
                 Product product = new Product();
-
+                product.seller = "test";
+                product.title = "테스트용 목록";
+                product.cost = Integer.toUnsignedLong(99999999);
+                product.category = "여성 의류";
+                product.text = "test";
+                product.time = Time.nowTime();
+                firestore.collection("Product").add(product);
 
 
             }
