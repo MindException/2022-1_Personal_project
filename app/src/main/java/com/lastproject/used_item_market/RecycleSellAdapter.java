@@ -13,10 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Product> productArrayList = new ArrayList<>();
+    private List<Product> productArrayList = new ArrayList<>();
+
+    RecycleSellAdapter(){}
+
+    RecycleSellAdapter(List<Product> productArrayList){    //새로운 쿼리용 생성자
+
+        this.productArrayList = productArrayList;
+
+    }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  어뎁터 눌렸울 경우 ㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public interface OnItemClickListener            //아이템이 눌린
