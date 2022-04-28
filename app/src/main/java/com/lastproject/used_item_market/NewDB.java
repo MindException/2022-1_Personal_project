@@ -93,7 +93,9 @@ public class NewDB extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         //쿼리 시작
         productRef = firestore.collection("Product");
-        Query query = productRef.orderBy("time", Query.Direction.DESCENDING).limit(limit);
+        Query query = productRef.whereEqualTo("purpose", "판매")
+                .whereEqualTo("category", "남성 의류")
+                .orderBy("time", Query.Direction.DESCENDING).limit(limit);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -136,7 +138,9 @@ public class NewDB extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
                                     isScrolling = false;
                                     //추가 쿼리
-                                    Query nextQuery = productRef.orderBy("time", Query.Direction.DESCENDING)
+                                    Query nextQuery = productRef.whereEqualTo("purpose", "판매")
+                                            .whereEqualTo("category", "남성 의류")
+                                            .orderBy("time", Query.Direction.DESCENDING)
                                             .startAfter(lastVisible).limit(limit);
                                     nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -256,7 +260,9 @@ public class NewDB extends AppCompatActivity implements SwipeRefreshLayout.OnRef
             //카테고리가 정해지지 않은 기본보기
         }else{
             productRef = firestore.collection("Product");
-            Query query = productRef.orderBy("time", Query.Direction.DESCENDING).limit(limit);
+            Query query = productRef.whereEqualTo("purpose", "판매")
+                    .whereEqualTo("category", "남성 의류")
+                    .orderBy("time", Query.Direction.DESCENDING).limit(limit);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -299,7 +305,9 @@ public class NewDB extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
                                         isScrolling = false;
                                         //추가 쿼리
-                                        Query nextQuery = productRef.orderBy("time", Query.Direction.DESCENDING)
+                                        Query nextQuery = productRef.whereEqualTo("purpose", "판매")
+                                                .whereEqualTo("category", "남성 의류")
+                                                .orderBy("time", Query.Direction.DESCENDING)
                                                 .startAfter(lastVisible).limit(limit);
                                         nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
